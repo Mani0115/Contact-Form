@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $headers = "From: $email";
 
     if (mail($to, $subject, $body, $headers)) {
-        header("Location: thank-you.html");
+        header("Location: tnqu.html");
         exit;
     } else {
         echo "Mail sending failed. Please try again.";
