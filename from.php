@@ -1,29 +1,42 @@
-<?php
+<?php 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name     = htmlspecialchars($_POST['name']);
-    $phone    = htmlspecialchars($_POST['phone']);
-    $email    = htmlspecialchars($_POST['email']);
-    $service  = htmlspecialchars($_POST['service']);
-    $message  = htmlspecialchars($_POST['message']);
+    // Sanitize and validate inputs
+    $name = htmlspecialchars(strip_tags(trim($_POST['name'])));
+    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
+    $subject = htmlspecialchars(strip_tags(trim($_POST['subject'])));
+    $message = htmlspecialchars(strip_tags(trim($_POST['message'])));
 
-    $to = "durgamanikumar2029@gmail.com";  // <-- Change to your actual email
-    $subject = "New Inquiry from Website";
+    // Validate required fields
+    if (empty($name) || empty($email) || empty($subject) || empty($message)) {
+        die("All fields are required.");
+    }
 
-    $body = "Name: $name\n";
-    $body .= "Phone: $phone\n";
-    $body .= "Email: $email\n";
-    $body .= "Service: $service\n";
-    $body .= "Message:\n$message\n";
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        die("Invalid email format.");
+    }
 
-    $headers = "From: $email";
+    // Recipient email
+    $recipient = "durgamanikumar2029@gmail.com";
 
-    if (mail($to, $subject, $body, $headers)) {
-        header("Location: tnqu.html");
-        exit;
+    // Email content
+    $email_body = "You have received a new message from your website contact form:\n\n";
+    $email_body .= "Name: $name\n";
+    $email_body .= "Email: $email\n";
+    $email_body .= "Subject: $subject\n";
+    $email_body .= "Message:\n$message\n";
+
+    // Email headers
+    $headers = "From: $name <$email>\r\n";
+    $headers .= "Reply-To: $email\r\n";
+    $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+
+    // Send the email
+    if (mail($recipient, $subject, $email_body, $headers)) {
+        echo "Message sent successfully.";
     } else {
-        echo "Mail sending failed. Please try again.";
+        echo "Error sending message.";
     }
 } else {
-    echo "Something went wrong.";
+    echo "Invalid request.";
 }
 ?>
