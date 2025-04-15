@@ -1,4 +1,4 @@
-<?php 
+<?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize and validate inputs
     $name = htmlspecialchars(strip_tags(trim($_POST['name'])));
@@ -32,7 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Send the email
     if (mail($recipient, $subject, $email_body, $headers)) {
-        echo "Message sent successfully.";
+        header("Location: tnqu.html");
+        exit;
     } else {
         echo "Error sending message.";
     }
