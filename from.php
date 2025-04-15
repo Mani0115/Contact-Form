@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $service  = htmlspecialchars($_POST['service']);
     $message  = htmlspecialchars($_POST['message']);
 
-    $to = "myni@gmail.com";  // <-- Change to your actual email
+    $to = "durgamanikumar2029@gmail.com";  // <-- Change to your actual email
     $subject = "New Inquiry from Website";
 
     $body = "Name: $name\n";
